@@ -9,3 +9,15 @@
 // Person C — decision logic
 // Build the game state, track collected items and previous decisions, implement a
 // Puzzle dependent on past actions and determine success or failure.
+// PERSON C - GAME STATE
+
+let currentRoom = "bootChamber";
+
+let hasRecoveryCard = false;
+let firewallOffline = false;
+
+let solvedConstPuzzle = false;
+let solvedEqualityPuzzle = false;
+let solvedReturnPuzzle = false;
+
+let gameOver = false;
