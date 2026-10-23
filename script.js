@@ -233,26 +233,237 @@ function getRoomNote(room) {
 // PERSON C - GAME STATE & DECISION LOGIC (TAHLIA)
 // ========================================
 
-// TODO: Build the game controller, room changes and puzzle logic.
-// Suggested controller contract:
-// - Start in "bootChamber" and call Person A's askRoomAction(room).
-// - Interpret Person B's action strings to navigate between rooms.
-// - "terminal" or "monitor" triggers that room's JS puzzle.
-// - "note" displays getRoomNote(room) via Person A.
-// - "trap" leads to an unsuccessful ending.
-// - Check whether the recovery card and firewall are resolved
-//   before the final "return" puzzle can unlock the exit.
-// - Remember discoveries across rooms and prevent duplicate rewards.
-// - Reset the whole game state when the player chooses to replay.
-//
-// Puzzles from Branko's lecture:
-// Room 1: "const"   - constant declaration
-// Room 2: "==="     - strict equality
-// Room 3: "return"  - function return value
-//
-// TODO: Decide success and failure endings.
-// TODO: Make sure returning to earlier rooms keeps progress.
-//
-// GAME INITIALIZATION - PERSON C ONLY
-// TODO: Call the main game function exactly once when ready.
-// Do not start the game automatically from Person B's section.
+let currentRoom = "bootChamber";
+
+let hasRecoveryCard = false;
+let firewallOffline = false;
+
+let solvedConstPuzzle = false;
+let solvedEqualityPuzzle = false;
+let solvedReturnPuzzle = false;
+
+let gameOver = false;
+
+
+// ========================================
+// ROOM 1 - CONST PUZZLE
+// ========================================
+
+function solveConstPuzzle() {
+    if (solvedConstPuzzle) {
+        alert("You have already solved this puzzle.");
+        return;
+    }
+
+    const answer = prompt(
+        "EVIL AI: Which keyword declares a variable " +
+        "that cannot be reassigned?\n" +
+        "Type const, let, or var."
+    );
+
+    if (answer === null) {
+        return "quit";
+    }
+
+    if (answer.trim().toLowerCase() === "const") {
+        solvedConstPuzzle = true;
+        hasRecoveryCard = true;
+
+        alert(
+            "Correct! You obtained the recovery card."
+        );
+    } else {
+        alert(
+            "Incorrect! The recovery card remains locked."
+        );
+    }
+}
+
+
+// ========================================
+// ROOM 2 - STRICT EQUALITY PUZZLE
+// ========================================
+
+function solveEqualityPuzzle() {
+    if (solvedEqualityPuzzle) {
+        alert("You have already solved this puzzle.");
+        return;
+    }
+
+    const answer = prompt(
+        "EVIL AI: Which operator compares two values " +
+        "without converting their types?\n" +
+        "Type == or ===."
+    );
+
+    if (answer === null) {
+        return "quit";
+    }
+
+    if (answer.trim() === "===") {
+        solvedEqualityPuzzle = true;
+        firewallOffline = true;
+
+        alert(
+            "Correct! The firewall is now offline."
+        );
+    } else {
+        alert(
+            "Incorrect! The firewall is still active."
+        );
+    }
+}
+
+
+// ========================================
+// ROOM 3 - RETURN PUZZLE
+// ========================================
+
+function solveReturnPuzzle() {
+    if (solvedReturnPuzzle) {
+        alert("You have already solved the final puzzle.");
+        return;
+    }
+
+    if (!hasRecoveryCard || !firewallOffline) {
+        alert(
+            "The exit terminal remains locked!\n" +
+            "You need the recovery card and the firewall " +
+            "must be offline."
+        );
+        return;
+    }
+
+    const answer = prompt(
+        "EVIL AI: Which keyword sends a value back " +
+        "from a function?\n" +
+        "Type the JavaScript keyword."
+    );
+
+    if (answer === null) {
+        return "quit";
+    }
+
+    if (answer.trim().toLowerCase() === "return") {
+        solvedReturnPuzzle = true;
+        gameOver = true;
+
+        alert(
+            "You escaped the Evil AI!\n" +
+            "JIGSAW: Every function has an ending.\n" +
+            "MISSION SUCCESS."
+        );
+    } else {
+        alert(
+            "Incorrect! The exit terminal rejects your answer."
+        );
+    }
+}
+// ========================================
+// PERSON C - MAIN GAME CONTROLLER
+// ========================================
+
+function escapeRoom() {
+    let playing = true;
+
+    while (playing && !gameOver) {
+        const action = askRoomAction(currentRoom);
+
+        // The player chose to quit.
+        if (action === "quit") {
+            playing = false;
+            continue;
+        }
+
+        // Navigate between rooms.
+        if (
+            action === "bootChamber" ||
+            action === "corridor" ||
+            action === "core"
+        ) {
+            currentRoom = action;
+            continue;
+        }
+
+        // Read the note for the current room.
+        if (action === "note") {
+            const currentRoomNote = getRoomNote(currentRoom);
+
+
+            if (currentRoomNote !== null) {
+                console.log(currentRoomNote);
+            }
+
+            continue;
+        }
+
+        // Room 1 puzzle.
+        if (
+            action === "terminal" &&
+            currentRoom === "bootChamber"
+        ) {
+            const result = solveConstPuzzle();
+
+
+            if (result === "quit") {
+                playing = false;
+            }
+            continue;
+        }
+
+        // Room 2 puzzle.
+        if (
+            action === "monitor" &&
+            currentRoom === "corridor"
+        ) {
+            const result = solveEqualityPuzzle();
+
+            if (result === "quit") {
+                playing = false;
+            }
+            continue;
+        }
+
+        // Room 3 puzzle.
+        if (
+            action === "terminal" &&
+            currentRoom === "core"
+        ) {
+            const result = solveReturnPuzzle();
+            if (result === "quit") {
+                playing = false;
+            }
+            continue;
+        }
+
+        // An unsuccessful choice.
+        if (action === "trap") {
+            gameOver = true;
+
+            alert(
+                "You trusted the Evil AI!\n" +
+                "SYSTEM: ESCAPE FAILED.\n" +
+                "MISSION TERMINATED."
+            );
+
+            continue;
+        }
+    }
+}
+// ========================================
+// RESET GAME STATE FOR REPLAY
+// ========================================
+
+function resetGameState() {
+    currentRoom = "bootChamber";
+
+    hasRecoveryCard = false;
+    firewallOffline = false;
+
+    solvedConstPuzzle = false;
+    solvedEqualityPuzzle = false;
+    solvedReturnPuzzle = false;
+
+    gameOver = false;
+}
+
