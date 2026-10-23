@@ -1,13 +1,11 @@
-[Escape room - README.md](https://github.com/user-attachments/files/33888826/Escape.room.-.README.md)
-
-
+[Escape room - README.md](https://github.com/user-attachments/files/33889397/Escape.room.-.README.md)
 # Escape the Evil AI: REVENGE.js 🤖🔐
 
 ### Three developers. Three rooms. One very angry AI.
 
 *A JavaScript-only browser escape-room adventure created as a bonus project for the Mayerfeld Consulting AI-Assisted Frontend Developer Practicum (October 2026).*
 
-> **EVIL AI:** YOU THINK THREE WINS CAN DEFEAT ME?!  
+> **EVIL AI:** YOU THINK THREE WINS CAN DEFEAT ME?!
 > **JIGSAW:** Hello again. I want to play another game.
 
 ---
@@ -33,7 +31,7 @@ This time, winning a game isn't enough. To escape, you'll need to explore rooms,
 5. Return to earlier rooms whenever you need to revisit a clue or finish a challenge.
 6. Choose carefully: not every promised exit can be trusted.
 
-**Controls and accessibility notes**
+### Controls and accessibility notes
 
 - The game uses native browser `alert()`, `prompt()`, and `confirm()` dialogs instead of buttons or a visual interface.
 - Enter the number shown for your chosen action; invalid menu choices are rejected and can be retried.
@@ -41,7 +39,7 @@ This time, winning a game isn't enough. To escape, you'll need to explore rooms,
 - Branko's notes and essential game feedback are intended to be shown in dialogs; additional messages may appear in the browser's Developer Tools **Console** (`F12`).
 - After a completed attempt, the replay flow is designed to clear inventory, puzzles, and room progress before starting again.
 
-> **Project status (23 October 2026):** World navigation, puzzles, game state, and the controller are merged. The Person A interaction functions are still awaiting integration on `main`. Although `index.html` is present, the current `script.js` calls `startAdventure()` before that function has been defined. The complete game will be playable after the interaction code is merged and tested. This note should be updated at release.
+> **Project status (23 October 2026):** Person B's story, navigation, and interaction functions and Person C's game-state and decision logic are being integrated and tested together. Update this note once the complete game has been tested successfully on `main`.
 
 ## 🚪 The three rooms
 
@@ -80,16 +78,17 @@ Find the recovery card, disable the firewall, and unlock the final exit without 
 - Handling cancellation without crashing
 - Resetting all game state for a new attempt
 - Integrating independently developed features using shared function contracts
+- Collaborating through Git branches, GitHub, and code integration
 
 ## 👩‍💻 The team
 
 | Developer | Responsibility | Key contributions |
 | --- | --- | --- |
-| **[Betim](https://github.com/BetimBajrami)** — Person A | Interaction systems | Player prompts, input validation, story presentation, note display, cancellation, and replay integration |
-| **[Aspa](https://github.com/ScubaMonster)** — Person B | Story & world navigation | Sequel storyline, three room descriptions, choice mappings, backtracking routes, and Branko's clues |
-| **[Tahlia](https://github.com/TahliaJK)** — Person C | Game state & decision logic | Inventory and progress tracking, three puzzles, navigation controller, endings, and reset logic |
+| **[Betim Bajrami](https://github.com/BetimBajrami)** | Original Concept & Creative Support | Contributed the original Escape Room concept, provided creative input, and supported the team's development process and overall project direction. |
+| **[Aspa Neraki](https://github.com/ScubaMonster)** | Story, navigation & interaction systems | Developed the storyline, room descriptions, choice mappings, navigation routes, player prompts, input validation, note display, cancellation handling, and replay functionality. |
+| **[Tahlia Kisten](https://github.com/TahliaJK)** | Game state & decision logic | Implemented inventory and progress tracking, the three JavaScript puzzles, navigation controller, endings, and game-state reset logic. |
 
-The project was developed collaboratively during the **Mayerfeld Consulting AI-Assisted Frontend Developer Practicum**.
+The project was developed collaboratively during the **Mayerfeld Consulting AI-Assisted Frontend Developer Practicum**. Each team member contributed to a different aspect of the project, including repository setup, story development, interaction systems, and game logic.
 
 ## 🗂️ Project structure
 
@@ -102,15 +101,10 @@ mayerfeld-Escape-The-Evil-AI/
 
 ### How the parts connect
 
-```text
-Person A: get the player's choice
-              ↓
-Person B: translate the choice into an action
-              ↓
-Person C: update the game / move rooms / solve puzzles
-              ↓
-Person A: communicate the result to the player
-```
+1. **Original concept & creative support:** Helped establish the game's concept and overall creative direction.
+2. **Story, navigation & interaction:** Presents the story, collects and validates player choices, and maps choices to room actions.
+3. **Game state & decision logic:** Processes game actions, updates inventory and puzzle progress, manages room navigation, and determines the game's outcomes.
+4. **Integration:** The interaction functions and game logic work together to deliver the complete adventure.
 
 **Example shared interfaces:** `getRoomDescription(room)`, `getRoomAction(room, choice)`, `getRoomNote(room)`, `askRoomAction(room)`, `escapeRoom()`, and `resetGameState()`.
 
@@ -125,13 +119,11 @@ cd mayerfeld-Escape-The-Evil-AI
 
 Open **`index.html`** in a browser. No build tools or package installation are needed.
 
-**Important:** Until Person A's interaction functions are merged into `main`, the startup call will produce an error rather than launch the complete adventure. See the project-status note above.
+**Important:** If the interaction functions and game logic have not yet been fully integrated into `main`, the game may not launch correctly. Confirm that the startup function is defined and test the complete adventure before marking the project as released.
 
 ## 🤝 Collaboration workflow
 
-Each developer worked in a dedicated Git branch, implemented their assigned functionality, and submitted pull requests for team review. Changes were merged into `main` after coordination and feedback.
-
-The separation between story/navigation, interaction, and game logic allowed the team to build independently while keeping their parts compatible.
+The team used GitHub to organize the project and collaborate on development. The original concept and creative direction helped shape the game, while story, navigation, interaction systems, and game-state logic were developed and brought together through the team's branch and integration workflow.
 
 ## 📚 Course context
 
