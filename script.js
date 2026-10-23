@@ -251,7 +251,7 @@ let gameOver = false;
 
 function solveConstPuzzle() {
     if (solvedConstPuzzle) {
-        console.log("You have already solved this puzzle.");
+        alert("You have already solved this puzzle.");
         return;
     }
 
@@ -262,19 +262,18 @@ function solveConstPuzzle() {
     );
 
     if (answer === null) {
-        console.log("Puzzle cancelled.");
-        return;
+        return "quit";
     }
 
     if (answer.trim().toLowerCase() === "const") {
         solvedConstPuzzle = true;
         hasRecoveryCard = true;
 
-        console.log(
+        alert(
             "Correct! You obtained the recovery card."
         );
     } else {
-        console.log(
+        alert(
             "Incorrect! The recovery card remains locked."
         );
     }
@@ -287,7 +286,7 @@ function solveConstPuzzle() {
 
 function solveEqualityPuzzle() {
     if (solvedEqualityPuzzle) {
-        console.log("You have already solved this puzzle.");
+        alert("You have already solved this puzzle.");
         return;
     }
 
@@ -298,19 +297,18 @@ function solveEqualityPuzzle() {
     );
 
     if (answer === null) {
-        console.log("Puzzle cancelled.");
-        return;
+        return "quit";
     }
 
     if (answer.trim() === "===") {
         solvedEqualityPuzzle = true;
         firewallOffline = true;
 
-        console.log(
+        alert(
             "Correct! The firewall is now offline."
         );
     } else {
-        console.log(
+        alert(
             "Incorrect! The firewall is still active."
         );
     }
@@ -323,12 +321,12 @@ function solveEqualityPuzzle() {
 
 function solveReturnPuzzle() {
     if (solvedReturnPuzzle) {
-        console.log("You have already solved the final puzzle.");
+        alert("You have already solved the final puzzle.");
         return;
     }
 
     if (!hasRecoveryCard || !firewallOffline) {
-        console.log(
+        alert(
             "The exit terminal remains locked!\n" +
             "You need the recovery card and the firewall " +
             "must be offline."
@@ -343,21 +341,20 @@ function solveReturnPuzzle() {
     );
 
     if (answer === null) {
-        console.log("Puzzle cancelled.");
-        return;
+        return "quit";
     }
 
     if (answer.trim().toLowerCase() === "return") {
         solvedReturnPuzzle = true;
         gameOver = true;
 
-        console.log(
+        alert(
             "You escaped the Evil AI!\n" +
             "JIGSAW: Every function has an ending.\n" +
             "MISSION SUCCESS."
         );
     } else {
-        console.log(
+        alert(
             "Incorrect! The exit terminal rejects your answer."
         );
     }
@@ -392,9 +389,7 @@ function escapeRoom() {
         if (action === "note") {
             const currentRoomNote = getRoomNote(currentRoom);
 
-            // Person A can display this returned text.
-            // Replace this console.log with the agreed
-            // Person A interaction function if necessary.
+
             if (currentRoomNote !== null) {
                 console.log(currentRoomNote);
             }
@@ -407,7 +402,12 @@ function escapeRoom() {
             action === "terminal" &&
             currentRoom === "bootChamber"
         ) {
-            solveConstPuzzle();
+            const result = solveConstPuzzle();
+
+
+            if (result === "quit") {
+                playing = false;
+            }
             continue;
         }
 
@@ -416,7 +416,11 @@ function escapeRoom() {
             action === "monitor" &&
             currentRoom === "corridor"
         ) {
-            solveEqualityPuzzle();
+            const result = solveEqualityPuzzle();
+
+            if (result === "quit") {
+                playing = false;
+            }
             continue;
         }
 
@@ -425,7 +429,10 @@ function escapeRoom() {
             action === "terminal" &&
             currentRoom === "core"
         ) {
-            solveReturnPuzzle();
+            const result = solveReturnPuzzle();
+            if (result === "quit") {
+                playing = false;
+            }
             continue;
         }
 
@@ -433,7 +440,7 @@ function escapeRoom() {
         if (action === "trap") {
             gameOver = true;
 
-            console.log(
+            alert(
                 "You trusted the Evil AI!\n" +
                 "SYSTEM: ESCAPE FAILED.\n" +
                 "MISSION TERMINATED."
@@ -460,26 +467,3 @@ function resetGameState() {
     gameOver = false;
 }
 
-// TODO: Build the game controller, room changes and puzzle logic.
-// Suggested controller contract:
-// - Start in "bootChamber" and call Person A's askRoomAction(room).
-// - Interpret Person B's action strings to navigate between rooms.
-// - "terminal" or "monitor" triggers that room's JS puzzle.
-// - "note" displays getRoomNote(room) via Person A.
-// - "trap" leads to an unsuccessful ending.
-// - Check whether the recovery card and firewall are resolved
-//   before the final "return" puzzle can unlock the exit.
-// - Remember discoveries across rooms and prevent duplicate rewards.
-// - Reset the whole game state when the player chooses to replay.
-//
-// Puzzles from Branko's lecture:
-// Room 1: "const"   - constant declaration
-// Room 2: "==="     - strict equality
-// Room 3: "return"  - function return value
-//
-// TODO: Decide success and failure endings.
-// TODO: Make sure returning to earlier rooms keeps progress.
-//
-// GAME INITIALIZATION - PERSON C ONLY
-// TODO: Call the main game function exactly once when ready.
-// Do not start the game automatically from Person B's section.
