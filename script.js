@@ -13,7 +13,7 @@
 //   world navigation, and game state logic.
 
 // ========================================
-// PERSON A - INTERACTION SYSTEMS (ASPA)
+// INTERACTION SYSTEMS
 // ========================================
 
 // Display the story created by Person B.
@@ -152,7 +152,7 @@ function startAdventure() {
 }
 
 // ========================================
-// PERSON B - STORY & WORLD NAVIGATION (ASPA)
+// STORY & WORLD NAVIGATION 
 // ========================================
 
 // Jigsaw and the Evil AI have very different opinions
@@ -336,7 +336,7 @@ function getRoomNote(room) {
 }
 
 // ========================================
-// PERSON C - GAME STATE & DECISION LOGIC (TAHLIA)
+// GAME STATE & DECISION LOGIC 
 // ========================================
 
 let currentRoom = "bootChamber";
@@ -453,7 +453,7 @@ function solveReturnPuzzle() {
   }
 }
 // ========================================
-// PERSON C - MAIN GAME CONTROLLER
+// MAIN GAME CONTROLLER
 // ========================================
 
 function escapeRoom() {
