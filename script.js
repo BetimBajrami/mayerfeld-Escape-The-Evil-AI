@@ -391,7 +391,7 @@ function escapeRoom() {
 
 
             if (currentRoomNote !== null) {
-                console.log(currentRoomNote);
+                showRoomNote(currentRoom);
             }
 
             continue;
@@ -467,3 +467,10 @@ function resetGameState() {
     gameOver = false;
 }
 
+// ========================================
+// GAME INITIALIZATION
+// ========================================
+
+// Three developers. One villain. Absolutely no CSS.
+
+startAdventure();
